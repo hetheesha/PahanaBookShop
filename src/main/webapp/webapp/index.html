@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pahana Edu Bookshop - Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="breadcrumb">
+                <span id="current-page-title">Dashboard</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-search">
+                <input type="text" placeholder="Search..." id="global-search">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="header-notifications">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+            </div>
+            <div class="header-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Admin User</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+                <div class="user-dropdown">
+                    <button class="dropdown-toggle" onclick="toggleUserDropdown()">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <a href="#" class="dropdown-item" onclick="showProfileModal()">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="showProfileModal()">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="logo-text">
+                    <h3>Pahana Edu</h3>
+                    <span>Bookshop</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                            <div class="nav-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <span class="nav-text">Dashboard</span>
+                            <div class="nav-indicator"></div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#bills" class="nav-link" data-section="bills">
+                            <div class="nav-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <span class="nav-text">Bills</span>
+                            <div class="nav-badge">New</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Management</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#customers" class="nav-link" data-section="customers">
+                            <div class="nav-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <span class="nav-text">Customers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#items" class="nav-link" data-section="items">
+                            <div class="nav-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <span class="nav-text">Items</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#categories" class="nav-link" data-section="categories">
+                            <div class="nav-icon">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <span class="nav-text">Categories</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">System</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#users" class="nav-link" data-section="users">
+                            <div class="nav-icon">
+                                <i class="fas fa-user-cog"></i>
+                            </div>
+                            <span class="nav-text">Users</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name-small">Admin</span>
+                    <span class="user-status">Online</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                <p>Welcome to Pahana Edu Bookshop Management System</p>
+            </div>
+            
+            <!-- Main Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card customers-card" onclick="showSection('customers')">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-customers">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h3>
+                        <p>Total Customers</p>
+                        <div class="stat-trend">
+                            <span id="customers-trend" class="trend-indicator">
+                                <i class="fas fa-arrow-up"></i> +5%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-action">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card items-card" onclick="showSection('items')">
+                    <div class="stat-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-items">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h3>
+                        <p>Total Items</p>
+                        <div class="stat-trend">
+                            <span id="items-trend" class="trend-indicator">
+                                <i class="fas fa-arrow-up"></i> +12%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-action">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card bills-card" onclick="showSection('bills')">
+                    <div class="stat-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-bills">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h3>
+                        <p>Total Bills</p>
+                        <div class="stat-trend">
+                            <span id="bills-trend" class="trend-indicator">
+                                <i class="fas fa-arrow-up"></i> +8%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-action">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card categories-card" onclick="showSection('categories')">
+                    <div class="stat-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-categories">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h3>
+                        <p>Categories</p>
+                        <div class="stat-trend">
+                            <span id="categories-trend" class="trend-indicator">
+                                <i class="fas fa-arrow-up"></i> +2%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-action">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Statistics Row -->
+            <div class="secondary-stats">
+                <div class="secondary-stat-card">
+                    <div class="secondary-stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="secondary-stat-info">
+                        <h4 id="total-revenue">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h4>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+
+                <div class="secondary-stat-card">
+                    <div class="secondary-stat-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="secondary-stat-info">
+                        <h4 id="today-bills">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h4>
+                        <p>Today's Bills</p>
+                    </div>
+                </div>
+
+                <div class="secondary-stat-card">
+                    <div class="secondary-stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="secondary-stat-info">
+                        <h4 id="low-stock-items">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h4>
+                        <p>Low Stock Items</p>
+                    </div>
+                </div>
+
+                <div class="secondary-stat-card">
+                    <div class="secondary-stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="secondary-stat-info">
+                        <h4 id="pending-bills">
+                            <span class="loading-spinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </h4>
+                        <p>Pending Bills</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="dashboard-actions">
+                <button class="btn btn-primary btn-lg" onclick="showCreateBillModal()">
+                    <i class="fas fa-plus"></i> Create New Bill
+                </button>
+                <button class="btn btn-outline btn-lg" onclick="showSection('customers')">
+                    <i class="fas fa-user-plus"></i> Add Customer
+                </button>
+                <button class="btn btn-outline btn-lg" onclick="showSection('items')">
+                    <i class="fas fa-book"></i> Add Item
+                </button>
+                <button class="btn btn-outline btn-lg" onclick="refreshDashboard()">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Recent Bills</h3>
+                        <button class="btn btn-ghost btn-sm" onclick="showSection('bills')">
+                            View All <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div id="recent-bills-list" class="activity-list">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Loading recent bills...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-line"></i> Quick Stats</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="quick-stats">
+                            <div class="quick-stat-item">
+                                <span class="quick-stat-label">This Month</span>
+                                <span class="quick-stat-value" id="month-bills">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </div>
+                            <div class="quick-stat-item">
+                                <span class="quick-stat-label">This Week</span>
+                                <span class="quick-stat-value" id="week-bills">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </div>
+                            <div class="quick-stat-item">
+                                <span class="quick-stat-label">Active Customers</span>
+                                <span class="quick-stat-value" id="active-customers">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </div>
+                            <div class="quick-stat-item">
+                                <span class="quick-stat-label">Items in Stock</span>
+                                <span class="quick-stat-value" id="items-in-stock">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customers Section -->
+        <section id="customers" class="content-section">
+            <div class="section-header">
+                <h1><i class="fas fa-users"></i> Customer Management</h1>
+                <button class="btn btn-primary" onclick="showAddCustomerModal()">
+                    <i class="fas fa-plus"></i> Add Customer
+                </button>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="customer-search" placeholder="Search customers by name, phone, email, or account number...">
+                <i class="fas fa-search"></i>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="customers-table">
+                    <thead>
+                        <tr>
+                            <th>Account No</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Total Purchases</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-tbody">
+                        <!-- Customer data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Items Section -->
+        <section id="items" class="content-section">
+            <div class="section-header">
+                <h1><i class="fas fa-book-open"></i> Item Management</h1>
+                <button class="btn btn-primary" onclick="showAddItemModal()">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="item-search" placeholder="Search items by name, code, or category...">
+                <i class="fas fa-search"></i>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="items-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items-tbody">
+                        <!-- Item data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="content-section">
+            <div class="section-header">
+                <h1><i class="fas fa-tags"></i> Category Management</h1>
+                <button class="btn btn-primary" onclick="showAddCategoryModal()">
+                    <i class="fas fa-plus"></i> Add Category
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="categories-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categories-tbody">
+                        <!-- Category data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Bills Section -->
+        <section id="bills" class="content-section">
+            <div class="section-header">
+                <h1><i class="fas fa-receipt"></i> Bill Management</h1>
+                <button class="btn btn-primary" onclick="showCreateBillModal()">
+                    <i class="fas fa-plus"></i> Create Bill
+                </button>
+            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="search-filter-section">
+                <div class="search-bar">
+                    <input type="text" id="bill-search" placeholder="Search bills by number or customer..." onkeyup="searchBills()">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="filter-options">
+                    <select id="bill-status-filter" onchange="filterBills()">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <input type="date" id="bill-date-from" onchange="filterBills()" placeholder="From Date">
+                    <input type="date" id="bill-date-to" onchange="filterBills()" placeholder="To Date">
+                    <button class="btn btn-secondary" onclick="clearBillFilters()">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bill Statistics -->
+            <div class="bill-stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-bills-count">0</h3>
+                        <p>Total Bills</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="active-bills-count">0</h3>
+                        <p>Active Bills</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-bills-amount">LKR 0.00</h3>
+                        <p>Total Amount</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="today-bills-count">0</h3>
+                        <p>Today's Bills</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="bills-table">
+                    <thead>
+                        <tr>
+                            <th>Bill Number</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bills-tbody">
+                        <!-- Bill data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Users Section -->
+        <section id="users" class="content-section">
+            <div class="section-header">
+                <h1><i class="fas fa-user-cog"></i> User Management</h1>
+                <button class="btn btn-primary" onclick="showAddUserModal()">
+                    <i class="fas fa-plus"></i> Add User
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <!-- User data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals will be added here -->
+    <div id="modal-container"></div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
